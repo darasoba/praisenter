@@ -13,3 +13,5 @@ packaging/windows64/msix/Praisenter/bin/
 packaging/windows64/msix/Praisenter/obj/
 /packaging/windows64/msix/Praisenter/AppPackages
 /packaging/windows64/msix/Praisenter/BundleArtifacts
+**/build/
+/.gradle

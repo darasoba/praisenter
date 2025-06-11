@@ -321,26 +321,11 @@ final class LoadingPane extends Pane {
 		}).apply(null).thenCompose((v) -> {
 			CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
 			LOGGER.info("Checking for new workspace");
-			if (this.context.workspaceManager.isNewWorkspace()) {
-				// copy the sample data to the workspace
-				try {
-					LOGGER.info("Initializing new workspace.");
-					java.nio.file.Path path = this.context.workspaceManager.getWorkspacePathResolver().getBasePath().resolve("new-workspace-samples.zip");
-					ClasspathLoader.copy("/org/praisenter/data/new-workspace-samples.zip", path);
-					List<File> files = new ArrayList<>();
-					files.add(path.toFile());
-					future = this.context.importFiles(files).thenAccept(v2 -> {
-						LOGGER.info("New workspace initialized");
-					}).exceptionally(t -> {
-						LOGGER.warn("Failed to import sample data: " + t.getMessage(), t);
-						return null;
-					});
-				} catch (Exception ex) {
-					LOGGER.warn("Failed to extract sample data: " + ex.getMessage(), ex);
-				}
-			} else {
-				LOGGER.info("Existing workspace detected, sample data import skipped");
-			}
+                        if (this.context.workspaceManager.isNewWorkspace()) {
+                                LOGGER.info("New workspace detected; skipping sample data import");
+                        } else {
+                                LOGGER.info("Existing workspace detected, sample data import skipped");
+                        }
 			
 			return future;
 		}).thenCompose(AsyncHelper.onJavaFXThreadAndWait(() -> {
